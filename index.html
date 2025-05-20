@@ -1,91 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ice Cream Date?</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-      body {
-        font-family: 'Comic Sans MS', cursive, sans-serif;
-      }
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
     </style>
-  </head>
-  <body class="bg-pink-100 flex items-center justify-center min-h-screen">
+</head>
+<body class="bg-pink-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-6 rounded-3xl shadow-xl text-center w-full max-w-sm">
-      <h1 class="text-3xl font-bold text-pink-600 mb-4">🍦 Ice Cream Date?</h1>
-      <p class="text-gray-700 mb-6">Hey! Wanna go grab some ice cream with me?</p>
+        <h1 class="text-3xl font-bold text-pink-600 mb-4">🍦 Ice Cream Date?</h1>
+        <p class="text-gray-700 mb-6">Hey! Wanna go grab some ice cream with me?</p>
 
-      <div class="flex gap-4 justify-center mb-4">
-        <button
-          onclick="showDatePicker()"
-          class="bg-pink-500 text-white px-5 py-2 rounded-full hover:bg-pink-600 transition"
-        >
-          Yes!
-        </button>
-        <button
-          onclick="handleMaybe()"
-          class="bg-gray-200 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-300 transition"
-        >
-          Maybe...
-        </button>
-      </div>
+        <div class="flex gap-4 justify-center mb-4">
+            <button onclick="showDatePicker()"
+                    class="bg-pink-500 text-white px-5 py-2 rounded-full hover:bg-pink-600 transition">
+                Yes!
+            </button>
+            <button onclick="handleMaybe()"
+                    class="bg-gray-200 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-300 transition">
+                Maybe...
+            </button>
+        </div>
 
-      <div id="datetimeContainer" class="hidden mt-4">
-        <label for="datetime" class="block text-gray-600 mb-1">Pick a date & time:</label>
-        <input
-          type="datetime-local"
-          id="datetime"
-          class="w-full mb-4 px-3 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400"
-        />
-        <button
-          onclick="submitDate()"
-          class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition"
-        >
-          Confirm
-        </button>
-      </div>
+        <div id="datetimeContainer" class="hidden mt-4">
+            <label for="datetime" class="block text-gray-600 mb-1">and WHEN??</label>
+            <input type="datetime-local"
+                   id="datetime"
+                   class="w-full mb-4 px-3 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <button onclick="submitDate()"
+                    class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition">
+                Confirm
+            </button>
+        </div>
 
-      <div id="responseMessage" class="text-pink-600 font-medium mt-4"></div>
+        <div id="responseMessage" class="text-pink-600 font-medium mt-4"></div>
     </div>
 
     <script>
-      function showDatePicker() {
-        document.getElementById('datetimeContainer').classList.remove('hidden');
-        document.getElementById('responseMessage').innerHTML = "";
-      }
-
-      function submitDate() {
-        const dateTime = document.getElementById('datetime').value;
-
-        if (!dateTime) {
-          alert("Please pick a date and time first! 😅");
-          return;
+        function showDatePicker() {
+            document.getElementById('datetimeContainer').classList.remove('hidden');
+            document.getElementById('responseMessage').innerHTML = "";
         }
 
-        const date = new Date(dateTime);
-        const message = `I'd love to go for ice cream on ${date.toLocaleString()} 🍦`;
+        function submitDate() {
+            const dateTime = document.getElementById('datetime').value;
 
-        confetti({
-          particleCount: 150,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
+            if (!dateTime) {
+                alert("Without a date? 😅");
+                return;
+            }
 
-        // Replace with your actual WhatsApp number
-        const phone = "919007567116"; 
-        const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.location.href = url;
-      }
+            const date = new Date(dateTime);
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+            document.getElementById('responseMessage').innerHTML = `
+              <p class="mb-2">Yay! Can't wait 🤩🍦</p>
+              <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExajhjN3QyaDlhcTYxdXpwZmxucDgzbTkzcmhudGpsNGxlc3Zsb3NmZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/FREyuwdIyYLFlJ8C6b/giphy.gif" alt="Excited gif" class="rounded-lg w-full max-w-xs mx-auto" />
+            `;
 
-      function handleMaybe() {
-        document.getElementById('datetimeContainer').classList.add('hidden');
-        document.getElementById('responseMessage').innerHTML = `
-          <p>Aww, maybe next time 😢</p>
-          <img src="https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif" alt="Sad gif" class="rounded-lg w-full max-w-xs mx-auto mt-2" />
-        `;
-      }
+            const formattedDate = formatCustomDate(dateTime);
+            const message = `See you on ${formattedDate} 🍦`;
+
+            // Replace with your actual WhatsApp number
+            const phone = "919007567116";
+            const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.location.href = url;
+        }
+
+        function handleMaybe() {
+            document.getElementById('datetimeContainer').classList.add('hidden');
+            document.getElementById('responseMessage').innerHTML = `
+              <p>Aww, maybe next time 😢</p>
+              <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazZ0bnltNG5ldWpuYWlreXl3Ym44cGNwaTRsZm1wamFtMnEzdjdmOCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GsazaEYR0JdEjMztPy/giphy.gif" alt="Sad gif" class="rounded-lg w-full max-w-xs mx-auto mt-2" />
+            `;
+
+        }
+        function formatCustomDate(dateString) {
+            const date = new Date(dateString);
+            const options = { weekday: 'long', hour: 'numeric', minute: '2-digit', hour12: true };
+
+            const day = date.getDate();
+            const month = date.toLocaleString('default', { month: 'short' }); // e.g. "May"
+            const year = String(date.getFullYear()).slice(-2); // "25"
+            const weekdayAndTime = date.toLocaleString('default', options); // e.g. "Wednesday, 4:30 PM"
+
+            return `${day} ${month}, ${year}; ${weekdayAndTime}`;
+        }
     </script>
-  </body>
+</body>
 </html>
